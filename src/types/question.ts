@@ -8,6 +8,7 @@ export interface Question {
   difficulty: Difficulty;
   tags: string[];
   type: 'single' | 'multiple' | 'code'; // Тип вопроса: один ответ, несколько ответов или сравнение кода
+  isLongCode?: boolean; // Флаг для длинных блоков кода (вывод в колонки)
 }
 
 export type Category = 

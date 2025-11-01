@@ -802,6 +802,7 @@ export const basicsQuestions: Omit<Question, 'id'>[] = [
     difficulty: 'Сложный',
     tags: ['основы', 'hooks', 'useEffect', 'cleanup'],
     type: 'code',
+    isLongCode: true,
   },
   {
     question: 'Какой вариант правильно передает props?',
@@ -828,6 +829,7 @@ export const basicsQuestions: Omit<Question, 'id'>[] = [
     difficulty: 'Средний',
     tags: ['основы', 'forms', 'events'],
     type: 'code',
+    isLongCode: true,
   },
   {
     question: 'Какой компонент правильно условно рендерит?',
@@ -867,6 +869,7 @@ export const basicsQuestions: Omit<Question, 'id'>[] = [
     difficulty: 'Сложный',
     tags: ['основы', 'context', 'useContext'],
     type: 'code',
+    isLongCode: true,
   },
   {
     question: 'Какой вариант правильно обрабатывает событие onChange?',
@@ -880,6 +883,7 @@ export const basicsQuestions: Omit<Question, 'id'>[] = [
     difficulty: 'Средний',
     tags: ['основы', 'forms', 'events'],
     type: 'code',
+    isLongCode: true,
   },
   {
     question: 'Какой вариант мемоизирует вычисление?',
