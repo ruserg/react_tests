@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Category, Difficulty } from '../types/question';
 
 interface TestFiltersProps {
@@ -34,6 +34,8 @@ export const TestFilters: React.FC<TestFiltersProps> = ({
   onDifficultyChange,
   onTagsChange,
 }) => {
+  const [tagsExpanded, setTagsExpanded] = useState(false);
+
   const handleTagToggle = (tag: string) => {
     if (selectedTags.includes(tag)) {
       onTagsChange(selectedTags.filter((t) => t !== tag));
@@ -86,34 +88,46 @@ export const TestFilters: React.FC<TestFiltersProps> = ({
 
       {/* Теги */}
       <div>
-        <label className="block text-sm font-semibold mb-3 text-gray-700">
-          Теги:
-        </label>
-        <div className="flex flex-wrap gap-2">
-          {availableTags.map((tag) => {
-            const isSelected = selectedTags.includes(tag);
-            return (
-              <button
-                key={tag}
-                onClick={() => handleTagToggle(tag)}
-                className={`px-3 py-2 rounded-full text-sm font-medium transition-all ${
-                  isSelected
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                #{tag}
-              </button>
-            );
-          })}
-        </div>
-        {selectedTags.length > 0 && (
+        <div className="flex items-center justify-between mb-3">
+          <label className="block text-sm font-semibold text-gray-700">
+            Теги:
+          </label>
           <button
-            onClick={() => onTagsChange([])}
-            className="mt-3 text-sm text-blue-600 hover:text-blue-800 font-medium"
+            onClick={() => setTagsExpanded(!tagsExpanded)}
+            className="text-sm text-blue-600 hover:text-blue-800 font-medium"
           >
-            Очистить все теги
+            {tagsExpanded ? 'Свернуть ▲' : 'Развернуть ▼'}
           </button>
+        </div>
+        {tagsExpanded && (
+          <>
+            <div className="flex flex-wrap gap-2">
+              {availableTags.map((tag) => {
+                const isSelected = selectedTags.includes(tag);
+                return (
+                  <button
+                    key={tag}
+                    onClick={() => handleTagToggle(tag)}
+                    className={`px-3 py-2 rounded-full text-sm font-medium transition-all ${
+                      isSelected
+                        ? 'bg-blue-600 text-white shadow-md'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                  >
+                    #{tag}
+                  </button>
+                );
+              })}
+            </div>
+            {selectedTags.length > 0 && (
+              <button
+                onClick={() => onTagsChange([])}
+                className="mt-3 text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Очистить все теги
+              </button>
+            )}
+          </>
         )}
       </div>
     </div>
