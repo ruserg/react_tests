@@ -14,6 +14,16 @@ export function filterQuestions(
   });
 }
 
+// Fisher-Yates shuffle для правильного перемешивания
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 export function applyTestMode(questions: Question[], mode: TestMode | null): Question[] {
   if (!mode) return questions;
   
@@ -22,20 +32,24 @@ export function applyTestMode(questions: Question[], mode: TestMode | null): Que
     return questions;
   }
   
-  // Перемешиваем вопросы для случайного выбора
-  const shuffled = [...questions].sort(() => Math.random() - 0.5);
-  
   // Если режим имеет конкретную сложность, сначала фильтруем по сложности
+  let filteredQuestions = questions;
   if (mode.difficulty) {
-    const difficultyFiltered = shuffled.filter(
+    filteredQuestions = questions.filter(
       (q) => q.difficulty === mode.difficulty
     );
-    
-    // Ограничиваем количество вопросов после фильтрации
-    return difficultyFiltered.slice(0, mode.questionCount);
+  }
+  
+  // Перемешиваем вопросы для случайного выбора
+  const shuffled = shuffleArray(filteredQuestions);
+  
+  // Если вопросов меньше нужного - дублируем массив до нужного количества
+  let questionsPool = shuffled;
+  while (questionsPool.length < mode.questionCount) {
+    questionsPool = [...questionsPool, ...shuffled];
   }
   
   // Ограничиваем количество вопросов
-  return shuffled.slice(0, mode.questionCount);
+  return questionsPool.slice(0, mode.questionCount);
 }
 
