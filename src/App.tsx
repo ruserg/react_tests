@@ -220,12 +220,15 @@ function App() {
         if (mainButton && !mainButton.disabled) {
           mainButton.click();
         }
+      } else if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        toggleDarkMode();
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [showResult]);
+  }, [showResult, toggleDarkMode]);
 
   // Показываем результаты
   if (isTestFinished) {
