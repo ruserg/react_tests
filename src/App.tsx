@@ -51,16 +51,8 @@ function App() {
   useEffect(() => {
     setQuestions(allQuestions);
     
-    // Загружаем прогресс из localStorage
-    const savedProgress = localStorage.getItem('testProgress');
-    if (savedProgress) {
-      const parsed = JSON.parse(savedProgress);
-      if (parsed.questions && parsed.userAnswers && parsed.currentQuestionIndex !== undefined) {
-        setQuestions(parsed.questions);
-        // Не восстанавливаем userAnswers и currentQuestionIndex автоматически,
-        // чтобы пользователь мог начать заново
-      }
-    }
+    // Не восстанавливаем прогресс из localStorage автоматически,
+    // пользователь должен начинать тест заново через выбор режима
   }, [setQuestions]);
 
   // Получаем уникальные теги из всех вопросов
