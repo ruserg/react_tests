@@ -76,7 +76,7 @@ export const TestResults: React.FC<TestResultsProps> = ({ stats, onStartAgain })
       {/* Статистика по категориям */}
       <div className="mb-8">
         <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">По категориям:</h3>
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {Object.entries(stats.categoryBreakdown)
             .filter(([_, data]) => data.total > 0)
             .map(([category, data]) => {

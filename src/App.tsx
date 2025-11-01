@@ -254,7 +254,7 @@ function App() {
           handleCancelStart();
         } else if (showShortcutsModal) {
           setShowShortcutsModal(false);
-        } else if (!showResult) {
+        } else if (!showResult && questions.length > 0) {
           handleSkip();
         }
       } else if (e.key === 'Enter') {
