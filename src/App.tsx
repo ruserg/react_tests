@@ -58,6 +58,10 @@ function App() {
   // Обработчик выбора режима - показываем модальное окно
   const handleModeSelect = (mode: TestMode | null) => {
     if (mode) {
+      // Если уже выбран этот режим - ничего не делаем
+      if (selectedMode?.id === mode.id) {
+        return;
+      }
       // Показываем модальное окно подтверждения
       setSelectedMode(mode);
       setShowStartModal(true);
