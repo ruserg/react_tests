@@ -54,7 +54,9 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
       </div>
 
       {/* Варианты ответов */}
-      <div className="space-y-3">
+      <div className={isCode && question.options.some(opt => opt.split('\n').length > 3) 
+        ? "grid grid-cols-1 md:grid-cols-2 gap-3" 
+        : "space-y-3"}>
         {question.options.map((option, index) => {
           const isSelected = selectedAnswers.includes(index);
           const isCorrect = correctAnswers.includes(index);
@@ -73,7 +75,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
               key={index}
               onClick={() => !disabled && onAnswerSelect(index)}
               disabled={disabled}
-              className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+              className={`text-left p-4 rounded-lg border-2 transition-all ${
                 disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
               } ${bgColor} ${
                 !disabled && !showResult ? 'hover:scale-105' : ''
