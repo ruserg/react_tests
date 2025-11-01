@@ -8,6 +8,7 @@ import { TestModeSelector } from './components/TestModeSelector';
 import { ThemeToggle } from './components/ThemeToggle';
 import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
 import { TestStartModal } from './components/TestStartModal';
+import { NoQuestionsModal } from './components/NoQuestionsModal';
 import allQuestions from './data/questions';
 import { calculateStats } from './utils/stats';
 import { filterQuestions, applyTestMode } from './utils/filter';
@@ -43,6 +44,7 @@ function App() {
   const [showResult, setShowResult] = useState(false);
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   const [showStartModal, setShowStartModal] = useState(false);
+  const [showNoQuestionsModal, setShowNoQuestionsModal] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
 
   // Загружаем вопросы при монтировании
@@ -82,6 +84,15 @@ function App() {
     if (selectedMode && allQuestions.length > 0) {
       const filtered = filterQuestions(allQuestions, selectedCategory, selectedDifficulty, selectedTags);
       const modeApplied = applyTestMode(filtered, selectedMode);
+      
+      // Проверяем что есть вопросы
+      if (modeApplied.length === 0) {
+        setShowStartModal(false);
+        setShowNoQuestionsModal(true);
+        setSelectedMode(null);
+        return;
+      }
+      
       setQuestions(modeApplied);
       setCurrentQuestionIndex(0);
       setSelectedAnswer(null);
@@ -339,6 +350,10 @@ function App() {
       <KeyboardShortcutsModal 
         isOpen={showShortcutsModal} 
         onClose={() => setShowShortcutsModal(false)} 
+      />
+      <NoQuestionsModal
+        isOpen={showNoQuestionsModal}
+        onClose={() => setShowNoQuestionsModal(false)}
       />
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Заголовок */}
