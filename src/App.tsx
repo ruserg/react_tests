@@ -376,26 +376,30 @@ function App() {
           onTagsChange={setSelectedTags}
         />
 
-        {/* Карточка вопроса */}
-        <QuestionCard
-          question={currentQuestion}
-          selectedAnswer={selectedAnswer}
-          onAnswerSelect={handleAnswerSelect}
-          showResult={showResult}
-          disabled={showResult}
-        />
+        {/* Карточка вопроса и навигация только при активном тесте */}
+        {questions.length > 0 && currentQuestion && (
+          <>
+            <QuestionCard
+              question={currentQuestion}
+              selectedAnswer={selectedAnswer}
+              onAnswerSelect={handleAnswerSelect}
+              showResult={showResult}
+              disabled={showResult}
+            />
 
-        {/* Навигация */}
-        <Navigation
-          currentQuestion={currentQuestionIndex}
-          totalQuestions={questions.length}
-          onNext={handleNextQuestion}
-          onFinish={handleFinish}
-          onSkip={handleSkip}
-          showResult={showResult}
-          disabled={selectedAnswer === null}
-          elapsedTime={elapsedTime}
-        />
+            {/* Навигация */}
+            <Navigation
+              currentQuestion={currentQuestionIndex}
+              totalQuestions={questions.length}
+              onNext={handleNextQuestion}
+              onFinish={handleFinish}
+              onSkip={handleSkip}
+              showResult={showResult}
+              disabled={selectedAnswer === null}
+              elapsedTime={elapsedTime}
+            />
+          </>
+        )}
       </div>
     </div>
   );
