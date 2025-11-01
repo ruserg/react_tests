@@ -22,6 +22,7 @@ function App() {
     isTestFinished,
     darkMode,
     testStartTime,
+    testEndTime,
     setQuestions,
     setCurrentQuestionIndex,
     addUserAnswer,
@@ -99,8 +100,7 @@ function App() {
   
   // Обновляем отображаемое время каждую секунду
   useEffect(() => {
-    if (testStartTime === null) {
-      setElapsedTime(0);
+    if (testStartTime === null || isTestFinished) {
       return;
     }
     
@@ -109,7 +109,7 @@ function App() {
     }, 1000);
     
     return () => clearInterval(interval);
-  }, [testStartTime]);
+  }, [testStartTime, isTestFinished]);
 
   // Сохраняем прогресс в localStorage
   useEffect(() => {
@@ -278,7 +278,7 @@ function App() {
 
   // Показываем результаты
   if (isTestFinished) {
-    const stats = calculateStats(questions, userAnswers, testStartTime);
+    const stats = calculateStats(questions, userAnswers, testStartTime, testEndTime);
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4">
         <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />

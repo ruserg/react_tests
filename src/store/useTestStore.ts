@@ -13,6 +13,7 @@ const initialState = {
   isTestFinished: false,
   darkMode: false,
   testStartTime: null as number | null,
+  testEndTime: null as number | null,
 };
 
 const getInitialDarkMode = () => {
@@ -43,7 +44,7 @@ export const useTestStore = create<TestStore>((set: any) => ({
   
   setSelectedMode: (mode: any) => set({ selectedMode: mode }),
   
-  finishTest: () => set({ isTestFinished: true }),
+  finishTest: () => set({ isTestFinished: true, testEndTime: Date.now() }),
   
   resetTest: () => set((state: any) => ({ 
     ...initialState,
@@ -54,7 +55,7 @@ export const useTestStore = create<TestStore>((set: any) => ({
   nextQuestion: () => set((state: any) => {
     const nextIndex = state.currentQuestionIndex + 1;
     if (nextIndex >= state.questions.length) {
-      return { isTestFinished: true };
+      return { isTestFinished: true, testEndTime: Date.now() };
     }
     return { currentQuestionIndex: nextIndex };
   }),
@@ -62,5 +63,7 @@ export const useTestStore = create<TestStore>((set: any) => ({
   toggleDarkMode: () => set((state: any) => ({ darkMode: !state.darkMode })),
   
   setTestStartTime: (time: number | null) => set({ testStartTime: time }),
+  
+  setTestEndTime: (time: number | null) => set({ testEndTime: time }),
 }));
 

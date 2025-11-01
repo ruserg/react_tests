@@ -11,6 +11,7 @@ export interface TestStore {
   isTestFinished: boolean;
   darkMode: boolean;
   testStartTime: number | null;
+  testEndTime: number | null;
   
   // Actions
   setQuestions: (questions: Question[]) => void;
@@ -25,5 +26,6 @@ export interface TestStore {
   nextQuestion: () => void;
   toggleDarkMode: () => void;
   setTestStartTime: (time: number | null) => void;
+  setTestEndTime: (time: number | null) => void;
 }
 

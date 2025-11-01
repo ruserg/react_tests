@@ -3,7 +3,8 @@ import { Question, UserAnswer, TestStats, Category, Difficulty } from '../types/
 export function calculateStats(
   questions: Question[],
   userAnswers: UserAnswer[],
-  testStartTime: number | null = null
+  testStartTime: number | null = null,
+  testEndTime: number | null = null
 ): TestStats {
   const totalQuestions = questions.length;
   
@@ -15,7 +16,8 @@ export function calculateStats(
     : 0;
   
   // Подсчет времени и скорости
-  const duration = testStartTime ? Math.floor((Date.now() - testStartTime) / 1000) : 0;
+  const endTime = testEndTime || Date.now();
+  const duration = testStartTime ? Math.floor((endTime - testStartTime) / 1000) : 0;
   const averageSpeed = totalQuestions > 0 ? duration / totalQuestions : 0;
 
   // Статистика по категориям
