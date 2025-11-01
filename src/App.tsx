@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useTestStore } from './store/useTestStore';
 import { QuestionCard } from './components/QuestionCard';
 import { TestResults } from './components/TestResults';
-import { TestFilters } from './components/TestFilters';
 import { Navigation } from './components/Navigation';
 import { TestModeSelector } from './components/TestModeSelector';
 import { ThemeToggle } from './components/ThemeToggle';
@@ -11,7 +10,7 @@ import { TestStartModal } from './components/TestStartModal';
 import { NoQuestionsModal } from './components/NoQuestionsModal';
 import allQuestions from './data/questions';
 import { calculateStats } from './utils/stats';
-import { filterQuestions, applyTestMode } from './utils/filter';
+import { applyTestMode } from './utils/filter';
 import { UserAnswer, testModes, TestMode } from './types/question';
 
 function App() {
@@ -19,9 +18,6 @@ function App() {
     questions,
     currentQuestionIndex,
     userAnswers,
-    selectedCategory,
-    selectedDifficulty,
-    selectedTags,
     selectedMode,
     isTestFinished,
     darkMode,
@@ -29,9 +25,6 @@ function App() {
     setQuestions,
     setCurrentQuestionIndex,
     addUserAnswer,
-    setSelectedCategory,
-    setSelectedDifficulty,
-    setSelectedTags,
     setSelectedMode,
     finishTest,
     resetTest,
@@ -49,11 +42,6 @@ function App() {
 
   // Начальное состояние - вопросы загружаются при выборе режима
   // Не загружаем все вопросы сразу, чтобы показать экран выбора режима
-
-  // Получаем уникальные теги из всех вопросов
-  const availableTags = Array.from(
-    new Set(allQuestions.flatMap((q) => q.tags))
-  ).filter((tag) => !tag.startsWith('вариант-') && !tag.startsWith('вопрос-'));
 
   // Обработчик выбора режима - показываем модальное окно
   const handleModeSelect = (mode: TestMode | null) => {
@@ -73,8 +61,7 @@ function App() {
   // Обработчик подтверждения начала теста
   const handleStartTest = () => {
     if (selectedMode && allQuestions.length > 0) {
-      const filtered = filterQuestions(allQuestions, selectedCategory, selectedDifficulty, selectedTags);
-      const modeApplied = applyTestMode(filtered, selectedMode);
+      const modeApplied = applyTestMode(allQuestions, selectedMode);
       
       // Проверяем что есть вопросы
       if (modeApplied.length === 0) {
@@ -306,8 +293,7 @@ function App() {
 
   // Показываем модальное окно начала теста
   if (showStartModal && selectedMode) {
-    const filtered = filterQuestions(allQuestions, selectedCategory, selectedDifficulty, selectedTags);
-    const modeApplied = applyTestMode(filtered, selectedMode);
+    const modeApplied = applyTestMode(allQuestions, selectedMode);
     
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
@@ -362,17 +348,6 @@ function App() {
           modes={testModes}
           selectedMode={selectedMode}
           onModeSelect={handleModeSelect}
-        />
-
-        {/* Фильтры */}
-        <TestFilters
-          selectedCategory={selectedCategory}
-          selectedDifficulty={selectedDifficulty}
-          selectedTags={selectedTags}
-          availableTags={availableTags}
-          onCategoryChange={setSelectedCategory}
-          onDifficultyChange={setSelectedDifficulty}
-          onTagsChange={setSelectedTags}
         />
 
         {/* Карточка вопроса и навигация только при активном тесте */}
