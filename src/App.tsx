@@ -52,12 +52,6 @@ function App() {
         // чтобы пользователь мог начать заново
       }
     }
-    
-    // Загружаем тему из localStorage
-    const savedTheme = localStorage.getItem('darkMode');
-    if (savedTheme === 'true') {
-      document.documentElement.classList.add('dark');
-    }
   }, [setQuestions]);
 
   // Получаем уникальные теги из всех вопросов
@@ -94,11 +88,10 @@ function App() {
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('darkMode', 'true');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('darkMode', 'false');
     }
+    localStorage.setItem('darkMode', String(darkMode));
   }, [darkMode]);
 
   const currentQuestion = questions[currentQuestionIndex];

@@ -2,14 +2,6 @@ import { create } from 'zustand';
 import { TestStore } from '../types/store';
 import { Question, UserAnswer, Category, Difficulty } from '../types/question';
 
-const getInitialDarkMode = () => {
-  if (typeof window !== 'undefined') {
-    const saved = localStorage.getItem('darkMode');
-    return saved === 'true';
-  }
-  return false;
-};
-
 const initialState = {
   questions: [] as Question[],
   currentQuestionIndex: 0,
@@ -19,11 +11,20 @@ const initialState = {
   selectedTags: [] as string[],
   selectedMode: null,
   isTestFinished: false,
-  darkMode: getInitialDarkMode(),
+  darkMode: false,
+};
+
+const getInitialDarkMode = () => {
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('darkMode');
+    return saved === 'true';
+  }
+  return false;
 };
 
 export const useTestStore = create<TestStore>((set: any) => ({
   ...initialState,
+  darkMode: getInitialDarkMode(),
 
   setQuestions: (questions: Question[]) => set({ questions }),
   
@@ -43,10 +44,11 @@ export const useTestStore = create<TestStore>((set: any) => ({
   
   finishTest: () => set({ isTestFinished: true }),
   
-  resetTest: () => set({ 
+  resetTest: () => set((state: any) => ({ 
     ...initialState,
+    darkMode: state.darkMode, // Сохраняем текущую тему
     questions: useTestStore.getState().questions, // Сохраняем вопросы
-  }),
+  })),
   
   nextQuestion: () => set((state: any) => {
     const nextIndex = state.currentQuestionIndex + 1;
