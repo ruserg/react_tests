@@ -2,6 +2,14 @@ import { create } from 'zustand';
 import { TestStore } from '../types/store';
 import { Question, UserAnswer, Category, Difficulty } from '../types/question';
 
+const getInitialDarkMode = () => {
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('darkMode');
+    return saved === 'true';
+  }
+  return false;
+};
+
 const initialState = {
   questions: [] as Question[],
   currentQuestionIndex: 0,
@@ -11,6 +19,7 @@ const initialState = {
   selectedTags: [] as string[],
   selectedMode: null,
   isTestFinished: false,
+  darkMode: getInitialDarkMode(),
 };
 
 export const useTestStore = create<TestStore>((set: any) => ({
@@ -46,5 +55,7 @@ export const useTestStore = create<TestStore>((set: any) => ({
     }
     return { currentQuestionIndex: nextIndex };
   }),
+  
+  toggleDarkMode: () => set((state: any) => ({ darkMode: !state.darkMode })),
 }));
 

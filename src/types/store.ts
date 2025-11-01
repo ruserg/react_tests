@@ -9,6 +9,7 @@ export interface TestStore {
   selectedTags: string[];
   selectedMode: TestMode | null;
   isTestFinished: boolean;
+  darkMode: boolean;
   
   // Actions
   setQuestions: (questions: Question[]) => void;
@@ -21,5 +22,6 @@ export interface TestStore {
   finishTest: () => void;
   resetTest: () => void;
   nextQuestion: () => void;
+  toggleDarkMode: () => void;
 }
 
