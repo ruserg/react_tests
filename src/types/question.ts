@@ -7,7 +7,7 @@ export interface Question {
   category: Category;
   difficulty: Difficulty;
   tags: string[];
-  type: 'single' | 'multiple'; // Тип вопроса: один ответ или несколько
+  type: 'single' | 'multiple' | 'code'; // Тип вопроса: один ответ, несколько ответов или сравнение кода
 }
 
 export type Category = 

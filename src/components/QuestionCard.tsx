@@ -17,6 +17,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   disabled = false,
 }) => {
   const isMultiple = question.type === 'multiple';
+  const isCode = question.type === 'code';
   const correctAnswers = Array.isArray(question.correctAnswer) 
     ? question.correctAnswer 
     : [question.correctAnswer];
@@ -41,7 +42,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
               {question.category}
             </span>
             <span className="text-xs bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300 px-2 py-1 rounded">
-              {isMultiple ? 'Несколько ответов' : 'Один ответ'}
+              {isCode ? 'Сравнение кода' : isMultiple ? 'Несколько ответов' : 'Один ответ'}
             </span>
           </div>
         </div>
@@ -80,7 +81,13 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 <span className="font-semibold mr-3 text-blue-600 dark:text-blue-400">
                   {String.fromCharCode(65 + index)}.
                 </span>
-                <span className="flex-1 text-gray-900 dark:text-gray-100">{option}</span>
+                {isCode ? (
+                  <pre className="flex-1 text-sm bg-gray-900 dark:bg-gray-950 text-green-400 p-3 rounded-lg overflow-x-auto font-mono">
+                    {option}
+                  </pre>
+                ) : (
+                  <span className="flex-1 text-gray-900 dark:text-gray-100">{option}</span>
+                )}
                 {showResult && isCorrect && (
                   <span className="text-green-600 dark:text-green-400 text-xl">✓</span>
                 )}

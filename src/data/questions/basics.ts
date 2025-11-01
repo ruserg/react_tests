@@ -751,5 +751,31 @@ export const basicsQuestions: Omit<Question, 'id'>[] = [
     tags: ['основы', 'fragment'],
     type: 'single',
   },
+  {
+    question: 'Какой вариант правильно обрабатывает клик в React?',
+    options: [
+      'const handleClick = () => {\n  console.log("Clicked");\n}',
+      'const handleClick = () => {\n  console.log(\'Clicked\');\n}',
+    ],
+    correctAnswer: 0,
+    explanation: 'В React event handlers можно использовать одинарные или двойные кавычки, оба варианта корректны. Подробнее: https://react.dev/learn/responding-to-events',
+    category: 'Основы',
+    difficulty: 'Средний',
+    tags: ['основы', 'events', 'syntax'],
+    type: 'code',
+  },
+  {
+    question: 'Какая реализация компонента корректна?',
+    options: [
+      'function MyComponent() {\n  return <div>Hello</div>;\n}',
+      'function MyComponent {\n  return <div>Hello</div>;\n}',
+    ],
+    correctAnswer: 0,
+    explanation: 'Функциональный компонент в React должен быть объявлен как function с круглыми скобками после имени. Подробнее: https://react.dev/learn/describing-the-ui',
+    category: 'Основы',
+    difficulty: 'Легкий',
+    tags: ['основы', 'components', 'syntax'],
+    type: 'code',
+  },
 ];
 
