@@ -43,11 +43,11 @@ export const TestModeSelector: React.FC<TestModeSelectorProps> = ({
                     {mode.description}
                   </p>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-1 rounded">
-                      {mode.questionCount === 1000 ? 'Все вопросы' : `${mode.questionCount} вопросов`}
+                    <span className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                      {mode.id === 'full' ? 'Все вопросы' : `${mode.questionCount} вопросов`}
                     </span>
                     {mode.difficulty && (
-                      <span className={`text-xs font-semibold px-2 py-1 rounded ${
+                      <span className={`text-xs px-2 py-1 rounded ${
                         mode.difficulty === 'Легкий' ? 'bg-green-100 text-green-800' :
                         mode.difficulty === 'Средний' ? 'bg-yellow-100 text-yellow-800' :
                         'bg-red-100 text-red-800'

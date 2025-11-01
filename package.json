@@ -1,7 +1,7 @@
 {
   "name": "react-test-platform",
   "version": "1.0.0",
-  "description": "Платформа для тестов на React с 1000 вопросов",
+  "description": "Платформа для тестов на React",
   "type": "module",
   "scripts": {
     "dev": "vite",
