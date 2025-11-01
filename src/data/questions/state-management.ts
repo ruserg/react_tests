@@ -1,0 +1,80 @@
+import { Question } from '../../types/question';
+
+export const stateManagementQuestions: Omit<Question, 'id'>[] = [
+  {
+    question: 'Что такое Context API?',
+    options: [
+      'Встроенный способ управления состоянием в React',
+      'Внешняя библиотека',
+      'API базы данных',
+      'Событие',
+    ],
+    correctAnswer: 0,
+    explanation: 'Context API - встроенный способ передачи данных через дерево компонентов без props drilling.',
+    category: 'State Management',
+    difficulty: 'Средний',
+    tags: ['context', 'state-management'],
+    type: 'single',
+  },
+  {
+    question: 'Что такое Redux?',
+    options: [
+      'Библиотека управления состоянием',
+      'Фреймворк UI',
+      'Язык программирования',
+      'База данных',
+    ],
+    correctAnswer: 0,
+    explanation: 'Redux - библиотека для предсказуемого управления состоянием приложения.',
+    category: 'State Management',
+    difficulty: 'Средний',
+    tags: ['redux', 'state-management'],
+    type: 'single',
+  },
+  {
+    question: 'Что такое Zustand?',
+    options: [
+      'Легковесная альтернатива Redux',
+      'React Hook',
+      'База данных',
+      'UI компонент',
+    ],
+    correctAnswer: 0,
+    explanation: 'Zustand - современная легковесная библиотека для управления состоянием.',
+    category: 'State Management',
+    difficulty: 'Средний',
+    tags: ['zustand', 'state-management'],
+    type: 'single',
+  },
+  {
+    question: 'Когда использовать Context API вместо глобального state менеджера?',
+    options: [
+      'Context для всего приложения',
+      'Context для простых случаев, глобальный менеджер для сложного состояния',
+      'Всегда глобальный менеджер',
+      'Context запрещен в React',
+    ],
+    correctAnswer: 1,
+    explanation: 'Context подходит для простого состояния, а глобальные менеджеры - для сложных приложений.',
+    category: 'State Management',
+    difficulty: 'Средний',
+    tags: ['context', 'state-management'],
+    type: 'single',
+  },
+  {
+    question: 'Что такое props drilling?',
+    options: [
+      'Передача props через несколько уровней компонентов',
+      'Работа с API',
+      'Удаление props',
+      'Создание props',
+    ],
+    correctAnswer: 0,
+    explanation: 'Props drilling - передача props через множество промежуточных компонентов, которую можно избежать с Context.',
+    category: 'State Management',
+    difficulty: 'Средний',
+    tags: ['props', 'state-management'],
+    type: 'single',
+  },
+];
+

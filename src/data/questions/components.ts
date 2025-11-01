@@ -1,0 +1,80 @@
+import { Question } from '../../types/question';
+
+export const componentsQuestions: Omit<Question, 'id'>[] = [
+  {
+    question: 'Что такое React компонент?',
+    options: [
+      'Функция или класс, возвращающий JSX',
+      'Переменная',
+      'Метод',
+      'Библиотека',
+    ],
+    correctAnswer: 0,
+    explanation: 'Компонент - это основная единица React приложения, которая возвращает JSX.',
+    category: 'Компоненты',
+    difficulty: 'Легкий',
+    tags: ['компоненты'],
+    type: 'single',
+  },
+  {
+    question: 'Какие характеристики props верны в React?',
+    options: [
+      'Props можно изменять внутри компонента',
+      'Props передаются от родительского компонента к дочернему',
+      'Props доступны только в классовых компонентах',
+      'Props это внутреннее состояние компонента',
+    ],
+    correctAnswer: [1],
+    explanation: 'Props передаются от родителя к ребенку и являются неизменяемыми.',
+    category: 'Компоненты',
+    difficulty: 'Средний',
+    tags: ['props', 'компоненты'],
+    type: 'multiple',
+  },
+  {
+    question: 'В чем разница между функциональными и классовыми компонентами?',
+    options: [
+      'Нет разницы',
+      'Функциональные проще и используют Hooks',
+      'Классовые быстрее',
+      'Только классовые поддерживают состояние',
+    ],
+    correctAnswer: 1,
+    explanation: 'Функциональные компоненты проще, используют Hooks для состояния и рекомендуются в React.',
+    category: 'Компоненты',
+    difficulty: 'Средний',
+    tags: ['компоненты', 'hooks'],
+    type: 'single',
+  },
+  {
+    question: 'Что такое defaultProps?',
+    options: [
+      'Значения по умолчанию для props',
+      'Внутреннее состояние',
+      'Метод жизненного цикла',
+      'Событие',
+    ],
+    correctAnswer: 0,
+    explanation: 'defaultProps задает значения по умолчанию для props компонента.',
+    category: 'Компоненты',
+    difficulty: 'Средний',
+    tags: ['компоненты', 'props'],
+    type: 'single',
+  },
+  {
+    question: 'Что делает PropTypes?',
+    options: [
+      'Типизация props во время разработки',
+      'Работа с API',
+      'Управление состоянием',
+      'Рендеринг компонентов',
+    ],
+    correctAnswer: 0,
+    explanation: 'PropTypes предоставляет проверку типов props во время разработки.',
+    category: 'Компоненты',
+    difficulty: 'Средний',
+    tags: ['компоненты', 'props'],
+    type: 'single',
+  },
+];
+
