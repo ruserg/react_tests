@@ -250,7 +250,9 @@ function App() {
 
       if (e.key === 'Escape') {
         e.preventDefault();
-        if (showShortcutsModal) {
+        if (showStartModal) {
+          handleCancelStart();
+        } else if (showShortcutsModal) {
           setShowShortcutsModal(false);
         } else if (!showResult) {
           handleSkip();
@@ -272,7 +274,7 @@ function App() {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [showResult, showShortcutsModal, toggleDarkMode]);
+  }, [showResult, showShortcutsModal, showStartModal, toggleDarkMode]);
 
   // Показываем результаты
   if (isTestFinished) {
@@ -291,24 +293,6 @@ function App() {
     );
   }
 
-  // Показываем модальное окно начала теста
-  if (showStartModal && selectedMode) {
-    const modeApplied = applyTestMode(allQuestions, selectedMode);
-    
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
-        <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
-        <TestStartModal
-          isOpen={showStartModal}
-          mode={selectedMode}
-          questionCount={modeApplied.length}
-          onConfirm={handleStartTest}
-          onCancel={handleCancelStart}
-        />
-      </div>
-    );
-  }
-
   // Показываем загрузку только если тест начат
   if (questions.length > 0 && !currentQuestion) {
     return (
@@ -321,6 +305,11 @@ function App() {
     );
   }
 
+  // Вычисляем количество вопросов для модалки
+  const modeApplied = showStartModal && selectedMode 
+    ? applyTestMode(allQuestions, selectedMode)
+    : [];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 pb-32">
       <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
@@ -332,6 +321,15 @@ function App() {
         isOpen={showNoQuestionsModal}
         onClose={() => setShowNoQuestionsModal(false)}
       />
+      {showStartModal && selectedMode && (
+        <TestStartModal
+          isOpen={showStartModal}
+          mode={selectedMode}
+          questionCount={modeApplied.length}
+          onConfirm={handleStartTest}
+          onCancel={handleCancelStart}
+        />
+      )}
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Заголовок */}
         <header className="text-center mb-8">
