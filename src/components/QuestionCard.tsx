@@ -1,5 +1,7 @@
 import React from 'react';
 import { Question } from '../types/question';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface QuestionCardProps {
   question: Question;
@@ -82,9 +84,19 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                   {String.fromCharCode(65 + index)}.
                 </span>
                 {isCode ? (
-                  <pre className="flex-1 text-sm bg-gray-900 dark:bg-gray-950 text-green-400 p-3 rounded-lg overflow-x-auto font-mono">
-                    {option}
-                  </pre>
+                  <div className="flex-1 rounded-lg overflow-hidden">
+                    <SyntaxHighlighter
+                      language="javascript"
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                      }}
+                    >
+                      {option}
+                    </SyntaxHighlighter>
+                  </div>
                 ) : (
                   <span className="flex-1 text-gray-900 dark:text-gray-100">{option}</span>
                 )}
