@@ -5,6 +5,7 @@ import { TestResults } from './components/TestResults';
 import { TestFilters } from './components/TestFilters';
 import { Navigation } from './components/Navigation';
 import { TestModeSelector } from './components/TestModeSelector';
+import { ThemeToggle } from './components/ThemeToggle';
 import allQuestions from './data/questions';
 import { calculateStats } from './utils/stats';
 import { filterQuestions, applyTestMode } from './utils/filter';
@@ -20,6 +21,7 @@ function App() {
     selectedTags,
     selectedMode,
     isTestFinished,
+    darkMode,
     setQuestions,
     setCurrentQuestionIndex,
     addUserAnswer,
@@ -30,6 +32,7 @@ function App() {
     finishTest,
     resetTest,
     nextQuestion,
+    toggleDarkMode,
   } = useTestStore();
 
   const [selectedAnswer, setSelectedAnswer] = useState<number | number[] | null>(null);
@@ -48,6 +51,12 @@ function App() {
         // Не восстанавливаем userAnswers и currentQuestionIndex автоматически,
         // чтобы пользователь мог начать заново
       }
+    }
+    
+    // Загружаем тему из localStorage
+    const savedTheme = localStorage.getItem('darkMode');
+    if (savedTheme === 'true') {
+      document.documentElement.classList.add('dark');
     }
   }, [setQuestions]);
 
@@ -80,6 +89,17 @@ function App() {
       localStorage.setItem('testProgress', JSON.stringify(progress));
     }
   }, [questions, userAnswers, currentQuestionIndex]);
+  
+  // Применяем темную тему к документу
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('darkMode', 'true');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('darkMode', 'false');
+    }
+  }, [darkMode]);
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -218,7 +238,8 @@ function App() {
   if (isTestFinished) {
     const stats = calculateStats(questions, userAnswers);
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4">
+        <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
         <div className="max-w-6xl mx-auto">
           <TestResults stats={stats} onStartAgain={handleStartAgain} />
         </div>
@@ -229,24 +250,25 @@ function App() {
   // Показываем загрузку
   if (!currentQuestion) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-xl text-gray-700">Загрузка вопросов...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 dark:border-blue-400 mx-auto mb-4"></div>
+          <p className="text-xl text-gray-700 dark:text-gray-200">Загрузка вопросов...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 pb-32">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 pb-32">
+      <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Заголовок */}
         <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+          <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">
             React Тесты
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-300">
             Проверьте свои знания React с нашей коллекцией вопросов
           </p>
         </header>

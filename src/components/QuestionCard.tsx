@@ -25,27 +25,27 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
     selectedAnswer !== null ? [selectedAnswer] : [];
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
       {/* Заголовок вопроса */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2">
           <span className={`text-xs font-semibold px-2 py-1 rounded ${
-            question.difficulty === 'Легкий' ? 'bg-green-100 text-green-800' :
-            question.difficulty === 'Средний' ? 'bg-yellow-100 text-yellow-800' :
-            'bg-red-100 text-red-800'
+            question.difficulty === 'Легкий' ? 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300' :
+            question.difficulty === 'Средний' ? 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300' :
+            'bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-300'
           }`}>
             {question.difficulty}
           </span>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-600">
+            <span className="text-xs text-gray-600 dark:text-gray-400">
               {question.category}
             </span>
-            <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
+            <span className="text-xs bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300 px-2 py-1 rounded">
               {isMultiple ? 'Несколько ответов' : 'Один ответ'}
             </span>
           </div>
         </div>
-        <h2 className="text-xl font-bold text-gray-800">
+        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
           {question.question}
         </h2>
       </div>
@@ -57,12 +57,12 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           const isCorrect = correctAnswers.includes(index);
           const isWrong = isSelected && !isCorrect && showResult;
 
-          let bgColor = 'bg-gray-50 hover:bg-gray-100';
+          let bgColor = 'bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 border-gray-200 dark:border-gray-600';
           if (showResult) {
-            if (isCorrect) bgColor = 'bg-green-100 border-green-500';
-            if (isWrong) bgColor = 'bg-red-100 border-red-500';
+            if (isCorrect) bgColor = 'bg-green-100 dark:bg-green-900/50 border-green-500 dark:border-green-400';
+            if (isWrong) bgColor = 'bg-red-100 dark:bg-red-900/50 border-red-500 dark:border-red-400';
           } else if (isSelected) {
-            bgColor = 'bg-blue-100 border-blue-500';
+            bgColor = 'bg-blue-100 dark:bg-blue-900/50 border-blue-500 dark:border-blue-400';
           }
 
           return (
@@ -77,15 +77,15 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
               }`}
             >
               <div className="flex items-start">
-                <span className="font-semibold mr-3 text-blue-600">
+                <span className="font-semibold mr-3 text-blue-600 dark:text-blue-400">
                   {String.fromCharCode(65 + index)}.
                 </span>
-                <span className="flex-1">{option}</span>
+                <span className="flex-1 text-gray-900 dark:text-gray-100">{option}</span>
                 {showResult && isCorrect && (
-                  <span className="text-green-600 text-xl">✓</span>
+                  <span className="text-green-600 dark:text-green-400 text-xl">✓</span>
                 )}
                 {showResult && isWrong && (
-                  <span className="text-red-600 text-xl">✗</span>
+                  <span className="text-red-600 dark:text-red-400 text-xl">✗</span>
                 )}
               </div>
             </button>
@@ -97,11 +97,11 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
       {showResult && (
         <div className={`mt-4 p-4 rounded-lg ${
           JSON.stringify(selectedAnswers.sort()) === JSON.stringify(correctAnswers.sort())
-            ? 'bg-green-50 border border-green-200' 
-            : 'bg-red-50 border border-red-200'
+            ? 'bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800' 
+            : 'bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800'
         }`}>
-          <p className="text-sm font-semibold mb-1">Объяснение:</p>
-          <p className="text-sm text-gray-700">{question.explanation}</p>
+          <p className="text-sm font-semibold mb-1 text-gray-900 dark:text-gray-100">Объяснение:</p>
+          <p className="text-sm text-gray-700 dark:text-gray-300">{question.explanation}</p>
         </div>
       )}
 
@@ -110,7 +110,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         {question.tags.map((tag) => (
           <span
             key={tag}
-            className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded"
+            className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded"
           >
             #{tag}
           </span>
