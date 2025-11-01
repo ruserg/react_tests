@@ -8,6 +8,7 @@ interface NavigationProps {
   onSkip?: () => void;
   showResult?: boolean;
   disabled?: boolean;
+  elapsedTime?: number;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({
@@ -18,6 +19,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   onSkip,
   showResult = false,
   disabled = false,
+  elapsedTime = 0,
 }) => {
   const progress = ((currentQuestion + 1) / totalQuestions) * 100;
 
@@ -26,15 +28,20 @@ export const Navigation: React.FC<NavigationProps> = ({
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-lg">
       <div className="max-w-4xl mx-auto px-4 py-4">
-        {/* Прогресс */}
+        {/* Прогресс и таймер */}
         <div className="mb-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
               Вопрос {currentQuestion + 1} из {totalQuestions}
             </span>
-            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-              {Math.round(progress)}%
-            </span>
+            <div className="flex items-center gap-4">
+              <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+                ⏱️ {Math.floor(elapsedTime / 60)}:{(elapsedTime % 60).toString().padStart(2, '0')}
+              </span>
+              <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                {Math.round(progress)}%
+              </span>
+            </div>
           </div>
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
             <div

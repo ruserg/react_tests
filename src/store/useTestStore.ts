@@ -12,6 +12,7 @@ const initialState = {
   selectedMode: null,
   isTestFinished: false,
   darkMode: false,
+  testStartTime: null as number | null,
 };
 
 const getInitialDarkMode = () => {
@@ -59,5 +60,7 @@ export const useTestStore = create<TestStore>((set: any) => ({
   }),
   
   toggleDarkMode: () => set((state: any) => ({ darkMode: !state.darkMode })),
+  
+  setTestStartTime: (time: number | null) => set({ testStartTime: time }),
 }));
 

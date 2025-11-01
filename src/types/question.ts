@@ -37,6 +37,8 @@ export interface TestStats {
   categoryBreakdown: Record<Category, { total: number; correct: number }>;
   difficultyBreakdown: Record<Difficulty, { total: number; correct: number }>;
   topicsToReview: string[]; // Темы для повторения
+  duration: number; // Длительность теста в секундах
+  averageSpeed: number; // Средняя скорость ответа в секундах на вопрос
 }
 
 export interface TestMode {

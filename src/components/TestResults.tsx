@@ -40,6 +40,22 @@ export const TestResults: React.FC<TestResultsProps> = ({ stats, onStartAgain })
           <p className="text-gray-600 dark:text-gray-300 mt-2">Неправильных ответов</p>
         </div>
       </div>
+      
+      {/* Время и скорость */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="text-center p-6 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg">
+          <p className="text-4xl font-bold text-indigo-600 dark:text-indigo-400">
+            {Math.floor(stats.duration / 60)}:{(stats.duration % 60).toString().padStart(2, '0')}
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 mt-2">Время прохождения</p>
+        </div>
+        <div className="text-center p-6 bg-purple-50 dark:bg-purple-900/30 rounded-lg">
+          <p className="text-4xl font-bold text-purple-600 dark:text-purple-400">
+            {Math.round(stats.averageSpeed)}с
+          </p>
+          <p className="text-gray-600 dark:text-gray-300 mt-2">Средняя скорость на вопрос</p>
+        </div>
+      </div>
 
       {/* Общий процент */}
       <div className="mb-8">

@@ -23,6 +23,7 @@ function App() {
     selectedMode,
     isTestFinished,
     darkMode,
+    testStartTime,
     setQuestions,
     setCurrentQuestionIndex,
     addUserAnswer,
@@ -34,11 +35,13 @@ function App() {
     resetTest,
     nextQuestion,
     toggleDarkMode,
+    setTestStartTime,
   } = useTestStore();
 
   const [selectedAnswer, setSelectedAnswer] = useState<number | number[] | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
+  const [elapsedTime, setElapsedTime] = useState(0);
 
   // Загружаем вопросы при монтировании
   useEffect(() => {
@@ -71,8 +74,30 @@ function App() {
       setCurrentQuestionIndex(0);
       setSelectedAnswer(null);
       setShowResult(false);
+      setTestStartTime(null); // Сбрасываем таймер
     }
-  }, [selectedCategory, selectedDifficulty, selectedTags, selectedMode, setQuestions, setCurrentQuestionIndex]);
+  }, [selectedCategory, selectedDifficulty, selectedTags, selectedMode, setQuestions, setCurrentQuestionIndex, setTestStartTime]);
+  
+  // Запускаем таймер при первом ответе или начале теста
+  useEffect(() => {
+    if (questions.length > 0 && testStartTime === null && currentQuestionIndex === 0 && userAnswers.length === 0) {
+      setTestStartTime(Date.now());
+    }
+  }, [questions.length, testStartTime, currentQuestionIndex, userAnswers.length, setTestStartTime]);
+  
+  // Обновляем отображаемое время каждую секунду
+  useEffect(() => {
+    if (testStartTime === null) {
+      setElapsedTime(0);
+      return;
+    }
+    
+    const interval = setInterval(() => {
+      setElapsedTime(Math.floor((Date.now() - testStartTime) / 1000));
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, [testStartTime]);
 
   // Сохраняем прогресс в localStorage
   useEffect(() => {
@@ -239,7 +264,7 @@ function App() {
 
   // Показываем результаты
   if (isTestFinished) {
-    const stats = calculateStats(questions, userAnswers);
+    const stats = calculateStats(questions, userAnswers, testStartTime);
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4">
         <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
@@ -320,6 +345,7 @@ function App() {
           onSkip={handleSkip}
           showResult={showResult}
           disabled={selectedAnswer === null}
+          elapsedTime={elapsedTime}
         />
       </div>
     </div>

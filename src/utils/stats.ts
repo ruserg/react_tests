@@ -2,7 +2,8 @@ import { Question, UserAnswer, TestStats, Category, Difficulty } from '../types/
 
 export function calculateStats(
   questions: Question[],
-  userAnswers: UserAnswer[]
+  userAnswers: UserAnswer[],
+  testStartTime: number | null = null
 ): TestStats {
   const totalQuestions = questions.length;
   
@@ -12,6 +13,10 @@ export function calculateStats(
   const percentage = totalQuestions > 0 
     ? Math.round((correctAnswers / totalQuestions) * 100) 
     : 0;
+  
+  // Подсчет времени и скорости
+  const duration = testStartTime ? Math.floor((Date.now() - testStartTime) / 1000) : 0;
+  const averageSpeed = totalQuestions > 0 ? duration / totalQuestions : 0;
 
   // Статистика по категориям
   const categoryBreakdown: Record<Category, { total: number; correct: number }> = {
@@ -72,6 +77,8 @@ export function calculateStats(
     categoryBreakdown,
     difficultyBreakdown,
     topicsToReview,
+    duration,
+    averageSpeed,
   };
 }
 
