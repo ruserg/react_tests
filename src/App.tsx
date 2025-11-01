@@ -6,6 +6,7 @@ import { TestFilters } from './components/TestFilters';
 import { Navigation } from './components/Navigation';
 import { TestModeSelector } from './components/TestModeSelector';
 import { ThemeToggle } from './components/ThemeToggle';
+import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
 import allQuestions from './data/questions';
 import { calculateStats } from './utils/stats';
 import { filterQuestions, applyTestMode } from './utils/filter';
@@ -37,6 +38,7 @@ function App() {
 
   const [selectedAnswer, setSelectedAnswer] = useState<number | number[] | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const [showShortcutsModal, setShowShortcutsModal] = useState(false);
 
   // Загружаем вопросы при монтировании
   useEffect(() => {
@@ -211,7 +213,9 @@ function App() {
 
       if (e.key === 'Escape') {
         e.preventDefault();
-        if (!showResult) {
+        if (showShortcutsModal) {
+          setShowShortcutsModal(false);
+        } else if (!showResult) {
           handleSkip();
         }
       } else if (e.key === 'Enter') {
@@ -223,12 +227,15 @@ function App() {
       } else if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
         toggleDarkMode();
+      } else if (e.key === '?') {
+        e.preventDefault();
+        setShowShortcutsModal(true);
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [showResult, toggleDarkMode]);
+  }, [showResult, showShortcutsModal, toggleDarkMode]);
 
   // Показываем результаты
   if (isTestFinished) {
@@ -236,6 +243,10 @@ function App() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4">
         <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
+        <KeyboardShortcutsModal 
+          isOpen={showShortcutsModal} 
+          onClose={() => setShowShortcutsModal(false)} 
+        />
         <div className="max-w-6xl mx-auto">
           <TestResults stats={stats} onStartAgain={handleStartAgain} />
         </div>
@@ -258,6 +269,10 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 pb-32">
       <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
+      <KeyboardShortcutsModal 
+        isOpen={showShortcutsModal} 
+        onClose={() => setShowShortcutsModal(false)} 
+      />
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Заголовок */}
         <header className="text-center mb-8">
