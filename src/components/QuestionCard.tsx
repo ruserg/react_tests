@@ -101,7 +101,24 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             : 'bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800'
         }`}>
           <p className="text-sm font-semibold mb-1 text-gray-900 dark:text-gray-100">Объяснение:</p>
-          <p className="text-sm text-gray-700 dark:text-gray-300">{question.explanation}</p>
+          <p className="text-sm text-gray-700 dark:text-gray-300">
+            {question.explanation.split(/(https?:\/\/[^\s]+)/g).map((part, idx) => {
+              if (part.match(/^https?:\/\//)) {
+                return (
+                  <a
+                    key={idx}
+                    href={part}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+                  >
+                    {part}
+                  </a>
+                );
+              }
+              return <span key={idx}>{part}</span>;
+            })}
+          </p>
         </div>
       )}
 
