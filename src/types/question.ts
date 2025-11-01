@@ -85,7 +85,7 @@ export const testModes: TestMode[] = [
   {
     id: 'full',
     name: 'Полный тест',
-    description: 'Все доступные вопросы по выбранным фильтрам',
+    description: 'Все доступные вопросы',
     questionCount: 1000,
     icon: 'F',
   },
