@@ -47,13 +47,8 @@ function App() {
   const [showNoQuestionsModal, setShowNoQuestionsModal] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
 
-  // Загружаем вопросы при монтировании
-  useEffect(() => {
-    setQuestions(allQuestions);
-    
-    // Не восстанавливаем прогресс из localStorage автоматически,
-    // пользователь должен начинать тест заново через выбор режима
-  }, [setQuestions]);
+  // Начальное состояние - вопросы загружаются при выборе режима
+  // Не загружаем все вопросы сразу, чтобы показать экран выбора режима
 
   // Получаем уникальные теги из всех вопросов
   const availableTags = Array.from(
