@@ -7,10 +7,11 @@ import { Navigation } from './components/Navigation';
 import { TestModeSelector } from './components/TestModeSelector';
 import { ThemeToggle } from './components/ThemeToggle';
 import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
+import { TestStartModal } from './components/TestStartModal';
 import allQuestions from './data/questions';
 import { calculateStats } from './utils/stats';
 import { filterQuestions, applyTestMode } from './utils/filter';
-import { UserAnswer, testModes } from './types/question';
+import { UserAnswer, testModes, TestMode } from './types/question';
 
 function App() {
   const {
@@ -41,6 +42,7 @@ function App() {
   const [selectedAnswer, setSelectedAnswer] = useState<number | number[] | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
+  const [showStartModal, setShowStartModal] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
 
   // Загружаем вопросы при монтировании
@@ -64,26 +66,47 @@ function App() {
     new Set(allQuestions.flatMap((q) => q.tags))
   ).filter((tag) => !tag.startsWith('вариант-') && !tag.startsWith('вопрос-'));
 
-  // Фильтруем вопросы при изменении фильтров
-  useEffect(() => {
-    if (allQuestions.length > 0) {
+  // Обработчик выбора режима - показываем модальное окно
+  const handleModeSelect = (mode: TestMode | null) => {
+    if (mode) {
+      // Показываем модальное окно подтверждения
+      setSelectedMode(mode);
+      setShowStartModal(true);
+    } else {
+      setSelectedMode(null);
+    }
+  };
+  
+  // Обработчик подтверждения начала теста
+  const handleStartTest = () => {
+    if (selectedMode && allQuestions.length > 0) {
       const filtered = filterQuestions(allQuestions, selectedCategory, selectedDifficulty, selectedTags);
-      // Применяем режим теста, если выбран
       const modeApplied = applyTestMode(filtered, selectedMode);
       setQuestions(modeApplied);
       setCurrentQuestionIndex(0);
       setSelectedAnswer(null);
       setShowResult(false);
-      setTestStartTime(null); // Сбрасываем таймер
+      setTestStartTime(Date.now()); // Запускаем таймер
+      setShowStartModal(false);
     }
-  }, [selectedCategory, selectedDifficulty, selectedTags, selectedMode, setQuestions, setCurrentQuestionIndex, setTestStartTime]);
+  };
   
-  // Запускаем таймер при первом ответе или начале теста
+  // Обработчик отмены начала теста
+  const handleCancelStart = () => {
+    setShowStartModal(false);
+    setSelectedMode(null);
+  };
+  
+  // Сброс при очистке режима
   useEffect(() => {
-    if (questions.length > 0 && testStartTime === null && currentQuestionIndex === 0 && userAnswers.length === 0) {
-      setTestStartTime(Date.now());
+    if (!selectedMode && questions.length > 0 && userAnswers.length === 0) {
+      setQuestions([]);
+      setCurrentQuestionIndex(0);
+      setSelectedAnswer(null);
+      setShowResult(false);
+      setTestStartTime(null);
     }
-  }, [questions.length, testStartTime, currentQuestionIndex, userAnswers.length, setTestStartTime]);
+  }, [selectedMode, questions.length, userAnswers.length, setQuestions, setCurrentQuestionIndex, setTestStartTime]);
   
   // Обновляем отображаемое время каждую секунду
   useEffect(() => {
@@ -279,6 +302,25 @@ function App() {
     );
   }
 
+  // Показываем модальное окно начала теста
+  if (showStartModal && selectedMode) {
+    const filtered = filterQuestions(allQuestions, selectedCategory, selectedDifficulty, selectedTags);
+    const modeApplied = applyTestMode(filtered, selectedMode);
+    
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+        <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
+        <TestStartModal
+          isOpen={showStartModal}
+          mode={selectedMode}
+          questionCount={modeApplied.length}
+          onConfirm={handleStartTest}
+          onCancel={handleCancelStart}
+        />
+      </div>
+    );
+  }
+
   // Показываем загрузку
   if (!currentQuestion) {
     return (
@@ -313,7 +355,7 @@ function App() {
         <TestModeSelector
           modes={testModes}
           selectedMode={selectedMode}
-          onModeSelect={setSelectedMode}
+          onModeSelect={handleModeSelect}
         />
 
         {/* Фильтры */}
